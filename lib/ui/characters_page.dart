@@ -5,8 +5,8 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
-      width: 170,
+      height: 250,
+      width: 190,
       decoration: new BoxDecoration(
         color: Color(0xff33445e),
         borderRadius: BorderRadius.circular(10),
@@ -44,8 +44,6 @@ class _CharactersState extends State<Characters> {
     return new Scaffold(
       backgroundColor: Color(0xff201b1b),
       body: new ListView(
-        
-        physics: AlwaysScrollableScrollPhysics(),
         children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(20.0),
@@ -69,22 +67,21 @@ class _CharactersState extends State<Characters> {
                         Icons.search,
                         color: Colors.white,
                       ),
-                      contentPadding: const EdgeInsets.only(left: 10)),
+                      contentPadding: const EdgeInsets.only(left: 20)),
                 ),
               )
             ],
           ),
         ),
-        GridView.count(
-          primary: true,
-          // childAspectRatio: 170/220,
-          padding: const EdgeInsets.all(10),
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          children: <Widget>[for (var _ = 0; _ < 10; _++) CharacterCard()],
-        )
+          Wrap(
+            alignment: WrapAlignment.spaceAround,
+//            crossAxisAlignment: Wr,
+            runSpacing: 14.4, // gap between lines
+            children: <Widget>[
+              for(int _ = 0; _ < 20; _++)
+                CharacterCard()
+            ],
+          )
       ]),
     );
   }
