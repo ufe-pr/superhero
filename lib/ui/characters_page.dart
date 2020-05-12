@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:superhero/models/character_model.dart';
 import 'package:superhero/services/api_methods.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class CharacterCard extends StatelessWidget {
-  final String imgUrl, name;
+  final Character character;
 
-  const CharacterCard({Key key, this.imgUrl, this.name}) : super(key: key);
+  const CharacterCard({Key key, this.character}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 250,
-      width: 190,
-      decoration: new BoxDecoration(
-        color: Color(0xff33445e),
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          image: AssetImage('assets/images/alfred.jpg'),
-          fit: BoxFit.cover,
+    return Hero(
+      tag: 'image',
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, '/details', arguments: character);
+        },
+        child: Container(
+          height: 250,
+          width: 190,
+          decoration: new BoxDecoration(
+            color: Color(0xff33445e),
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: AssetImage('assets/images/alfred.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('PENNYWORTH', style: TextStyle(color: Colors.white, fontSize: 16)),
+                )
+              ]),
         ),
       ),
-      child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('PENNYWORTH', style: TextStyle(color: Colors.white, fontSize: 16)),
-            )
-          ]),
     );
   }
 }
@@ -41,16 +50,13 @@ class Characters extends StatefulWidget {
 
 class _CharactersState extends State<Characters> {
 
-  Future data;
+  Future<List<Character>> data;
 
   @override
   void initState() {
     super.initState();
-    data = _getData();
+    data = getSearchResults('batman');
   }
-
-  _getData()async => await getSearchResults('a');
-
   
   @override
   Widget build(BuildContext context) {
@@ -72,7 +78,7 @@ class _CharactersState extends State<Characters> {
                   children: <Widget>[
                     for(int i = 0; i < snapshot.data.length; i++)
 
-                      CharacterCard()
+                      CharacterCard(character: snapshot.data[i],)
                   ],
                 ) : Center(child: CircularProgressIndicator(),);
               }

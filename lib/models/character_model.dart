@@ -9,7 +9,7 @@ Character characterFromJson(String str) => Character.fromMap(json.decode(str));
 String characterToJson(Character data) => json.encode(data.toMap());
 
 class Character {
-  final int id;
+  final String id;
   final String name;
   final Powerstats powerstats;
   final Biography biography;
@@ -72,8 +72,8 @@ class Appearance {
   factory Appearance.fromMap(Map<String, dynamic> json) => Appearance(
     gender: json["gender"] == null ? null : json["gender"],
     race: json["race"] == null ? null : json["race"],
-    height: json["height"] == null ? null : List<String>.from(json["height"].map((x) => x))[1],
-    weight: json["weight"] == null ? null : List<String>.from(json["weight"].map((x) => x))[1],
+    height: json["height"] == null ? null : json["height"][json["height"].length > 0 ? json["height"].length - 1 : 0],
+    weight: json["weight"] == null ? null : json["weight"][json["weight"].length > 0 ? json["weight"].length - 1 : 0],
     eyeColor: json["eye-color"] == null ? null : json["eye-color"],
     hairColor: json["hair-color"] == null ? null : json["hair-color"],
   );
@@ -138,8 +138,8 @@ class Connections {
   });
 
   factory Connections.fromMap(Map<String, dynamic> json) => Connections(
-    groupAffiliation: json["group-affiliation"] == null ? null : json["group-affiliation"].split(","),
-    relatives: json["relatives"] == null ? null : json["relatives"].split(","),
+    groupAffiliation: json["group-affiliation"] == null ? null : json["group-affiliation"].split(RegExp(r"; |, ")),
+    relatives: json["relatives"] == null ? null : json["relatives"].split(RegExp(r"; |, ")),
   );
 
   Map<String, dynamic> toMap() => {
@@ -165,12 +165,12 @@ class Image {
 }
 
 class Powerstats {
-  final int intelligence;
-  final int strength;
-  final int speed;
-  final int durability;
-  final int power;
-  final int combat;
+  final String intelligence;
+  final String strength;
+  final String speed;
+  final String durability;
+  final String power;
+  final String combat;
 
   Powerstats({
     this.intelligence,
@@ -182,21 +182,21 @@ class Powerstats {
   });
 
   factory Powerstats.fromMap(Map<String, dynamic> json) => Powerstats(
-    intelligence: json["intelligence"] == null ? null : int.parse(json["intelligence"]),
-    strength: json["strength"] == null ? null : int.parse(json["strength"]),
-    speed: json["speed"] == null ? null : int.parse(json["speed"]),
-    durability: json["durability"] == null ? null : int.parse(json["durability"]),
-    power: json["power"] == null ? null : int.parse(json["power"]),
-    combat: json["combat"] == null ? null : int.parse(json["combat"]),
+    intelligence: json["intelligence"] == null ? '' : json["intelligence"],
+    strength: json["strength"] == null ? '' : json["strength"],
+    speed: json["speed"] == null ? '' : json["speed"],
+    durability: json["durability"] == null ? '' : json["durability"],
+    power: json["power"] == null ? '' : json["power"],
+    combat: json["combat"] == null ? '' : json["combat"],
   );
 
   Map<String, dynamic> toMap() => {
-    "intelligence": intelligence == null ? null : intelligence,
-    "strength": strength == null ? null : strength,
-    "speed": speed == null ? null : speed,
-    "durability": durability == null ? null : durability,
-    "power": power == null ? null : power,
-    "combat": combat == null ? null : combat,
+    "intelligence": intelligence == '' ? null : intelligence,
+    "strength": strength == '' ? null : strength,
+    "speed": speed == '' ? null : speed,
+    "durability": durability == '' ? null : durability,
+    "power": power == '' ? null : power,
+    "combat": combat == '' ? null : combat,
   };
 }
 

@@ -3,6 +3,24 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:superhero/models/character_model.dart' as char;
 
+class Details extends StatefulWidget {
+  @override
+  _DetailsState createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
+  @override
+  Widget build(BuildContext context) {
+    var args = ModalRoute.of(context).settings.arguments;
+    char.Character character = args;
+    return Scaffold(
+      body: MyScrollView(
+        character: character,
+      ),
+    );
+  }
+}
+
 class TopDisplay extends StatelessWidget {
   final String imageUrl, characterName, publisher, heroTag;
 
@@ -65,7 +83,7 @@ class TopDisplay extends StatelessWidget {
             )
           ],
         ),
-        tag: heroTag,
+        tag: 'image',
       ),
       height: 275,
     );
@@ -84,24 +102,30 @@ class MyScrollView extends StatefulWidget {
 Widget _buildDifferentSizeText(String text) {
   String part1, part2;
   List<String> splitString = text.split(' ');
-  part1 = splitString[0];
-  part2 = splitString[1];
-
-  return RichText(
-    text: TextSpan(
-      children: [
-        TextSpan(text: part1, style: ATTRIBUTE_VALUE_STYLE),
-        TextSpan(
-          text: part2,
-          style: GoogleFonts.raleway(
-            textStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+  if (splitString.length == 2) {
+    part1 = splitString[0];
+    part2 = splitString[1];
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: part1, style: ATTRIBUTE_VALUE_STYLE),
+          TextSpan(
+            text: part2,
+            style: GoogleFonts.raleway(
+              textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
+    );
+  }
+
+  return Text(
+    text,
+    style: ATTRIBUTE_VALUE_STYLE,
   );
 }
 
@@ -143,6 +167,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.biography.alignment,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Alignment',
                 repIcon: Icon(Icons.format_align_right),
@@ -151,6 +176,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   '${widget.character.powerstats.power}',
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Power',
                 repIcon: Icon(Icons.offline_bolt),
@@ -159,6 +185,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.appearance.race,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Race',
                 repIcon: Icon(Icons.person),
@@ -167,6 +194,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.appearance.gender,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Gender',
                 repIcon: FaIcon(FontAwesomeIcons.transgender),
@@ -187,6 +215,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.appearance.eyeColor,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Eye color',
                 repIcon: Icon(Icons.remove_red_eye),
@@ -195,6 +224,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.appearance.hairColor,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Hair color',
                 repIcon: Icon(Icons.face),
@@ -203,6 +233,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.work.base,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Base of operation',
                 repIcon: Icon(Icons.location_on),
@@ -212,6 +243,7 @@ class _MyScrollViewState extends State<MyScrollView> {
                 attributeValue: Text(
                   widget.character.biography.fullName,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Full Name',
                 repIcon: Icon(Icons.details),
@@ -219,70 +251,60 @@ class _MyScrollViewState extends State<MyScrollView> {
               ),
               AttributeCard(
                 attributeValue: Text(
-                  widget.character.biography.alignment,
-                  style: ATTRIBUTE_VALUE_STYLE,
-                ),
-                attributeName: 'Alignment',
-                repIcon: Icon(Icons.format_align_right),
-              ),
-              AttributeCard(
-                attributeValue: Text(
                   widget.character.work.occupation,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Occupation',
                 repIcon: Icon(Icons.work),
+                isFullWidth: true,
               ),
               AttributeCard(
                 attributeValue: Text(
                   widget.character.biography.placeOfBirth,
                   style: ATTRIBUTE_VALUE_STYLE,
+                  softWrap: true,
                 ),
                 attributeName: 'Place of birth',
                 repIcon: Icon(Icons.my_location),
+                isFullWidth: true,
               ),
               AttributeCard(
                 attributeValue: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: widget.character.connections.groupAffiliation
-                      .map((group) => Text(
-                            group,
-                            style: ATTRIBUTE_VALUE_STYLE,
+                      .map((group) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              group.toUpperCase(),
+                              style: ATTRIBUTE_VALUE_STYLE,
+                              softWrap: true,
+                            ),
                           ))
                       .toList(),
                 ),
                 attributeName: 'Group Affiliations',
                 repIcon: Icon(Icons.swap_horiz),
+                isFullWidth: true,
               ),
               AttributeCard(
                 attributeValue: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:
                       widget.character.connections.relatives.map((relative) {
-                    List<String> splitString = relative.split(RegExp(
-                      '\s.\(|\)',
-                      dotAll: true,
-                    ));
-                    String part1 = splitString[0];
-                    String part2 = splitString[1];
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          part1,
-                          style: ATTRIBUTE_VALUE_STYLE,
-                        ),
-                        Text(
-                          part2,
-                          style: ATTRIBUTE_NAME_STYLE,
-                        ),
-                      ],
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        relative.toUpperCase(),
+                        style: ATTRIBUTE_VALUE_STYLE,
+                        softWrap: true,
+                      ),
                     );
                   }).toList(),
                 ),
                 attributeName: 'Relatives',
                 repIcon: Icon(Icons.people),
+                isFullWidth: true,
               ),
             ],
           ),
@@ -331,7 +353,7 @@ class AttributeCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                this.attributeValue,
+                Expanded(child: this.attributeValue),
                 this.repIcon,
               ],
             ),

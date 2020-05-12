@@ -25,7 +25,7 @@ Future<List<Character>> getSearchResults(String keyword) async {
 }
 
 Future<Character> getCharacterWithId(int id) async {
-  var response = await http.get('$SEARCH_URL/$id');
+  var response = await http.get('$ID_URL/$id');
   if (response.statusCode == 200) {
     var res = json.decode(response.body);
     if (res['response'] == 'success') {
