@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:superhero/services/api_methods.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class CharacterCard extends StatelessWidget {
-  // String imgUrl, name;
+  final String imgUrl, name;
+
+  const CharacterCard({Key key, this.imgUrl, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +26,7 @@ class CharacterCard extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Pennyworth', style: TextStyle(color: Colors.white)),
+              child: Text('PENNYWORTH', style: TextStyle(color: Colors.white, fontSize: 16)),
             )
           ]),
     );
@@ -30,21 +34,51 @@ class CharacterCard extends StatelessWidget {
 }
 
 class Characters extends StatefulWidget {
-  const Characters({
-    Key key,
-  }) : super(key: key);
 
   @override
   _CharactersState createState() => _CharactersState();
 }
 
 class _CharactersState extends State<Characters> {
+
+  Future data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = _getData();
+  }
+
+  _getData()async => await getSearchResults('a');
+
+  
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color(0xff201b1b),
-      body: new ListView(
-        children: <Widget>[
+      body: new Stack(children: <Widget>[
+        ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 65,
+            ),
+            FutureBuilder(
+              future: data,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.hasError){
+                  print(snapshot.error);
+                }
+                return snapshot.hasData ? Wrap(
+                  children: <Widget>[
+                    for(int i = 0; i < snapshot.data.length; i++)
+
+                      CharacterCard()
+                  ],
+                ) : Center(child: CircularProgressIndicator(),);
+              }
+              )
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
@@ -57,6 +91,10 @@ class _CharactersState extends State<Characters> {
                       border: new OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
                           const Radius.circular(18.0),
+                        ),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
                         ),
                       ),
                       filled: true,
@@ -73,15 +111,6 @@ class _CharactersState extends State<Characters> {
             ],
           ),
         ),
-          Wrap(
-            alignment: WrapAlignment.spaceAround,
-//            crossAxisAlignment: Wr,
-            runSpacing: 14.4, // gap between lines
-            children: <Widget>[
-              for(int _ = 0; _ < 20; _++)
-                CharacterCard()
-            ],
-          )
       ]),
     );
   }

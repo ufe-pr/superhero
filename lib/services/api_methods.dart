@@ -7,6 +7,7 @@ const BASE_URL = 'https://superheroapi.com/api/$API_ACCESS_TOKEN';
 const SEARCH_URL = '$BASE_URL/search';
 const ID_URL = '$BASE_URL/id';
 
+
 Future<List<Character>> getSearchResults(String keyword) async {
   var response = await http.get('$SEARCH_URL/$keyword');
   if (response.statusCode == 200) {
