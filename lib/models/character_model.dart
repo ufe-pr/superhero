@@ -16,7 +16,7 @@ class Character {
   final Appearance appearance;
   final Work work;
   final Connections connections;
-  final Image image;
+  final CharacterImage image;
 
   Character({
     this.id,
@@ -37,7 +37,7 @@ class Character {
     appearance: json["appearance"] == null ? null : Appearance.fromMap(json["appearance"]),
     work: json["work"] == null ? null : Work.fromMap(json["work"]),
     connections: json["connections"] == null ? null : Connections.fromMap(json["connections"]),
-    image: json["image"] == null ? null : Image.fromMap(json["image"]),
+    image: json["image"] == null ? null : CharacterImage.fromMap(json["image"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -148,14 +148,14 @@ class Connections {
   };
 }
 
-class Image {
+class CharacterImage {
   final String url;
 
-  Image({
+  CharacterImage({
     this.url,
   });
 
-  factory Image.fromMap(Map<String, dynamic> json) => Image(
+  factory CharacterImage.fromMap(Map<String, dynamic> json) => CharacterImage(
     url: json["url"] == null ? null : json["url"],
   );
 

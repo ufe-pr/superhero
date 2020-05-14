@@ -35,55 +35,55 @@ class TopDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Hero(
-        child: Stack(
-          children: <Widget>[
-            Positioned.fill(
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Hero(
+              tag: this.heroTag,
               child: Image.network(
                 this.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0x12000000),
-                      Colors.transparent,
-                      Color(0x12000000),
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0x12000000),
+                    Colors.transparent,
+                    Color(0x12000000),
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
                 ),
               ),
             ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    this.characterName,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 15,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  this.characterName,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
                   ),
-                  Text(
-                    this.publisher,
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
+                ),
+                Text(
+                  this.publisher,
+                  style: TextStyle(
+                    fontSize: 14,
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
-        tag: 'image',
+                ),
+              ],
+            ),
+          )
+        ],
       ),
       height: 275,
     );
@@ -135,9 +135,12 @@ class _MyScrollViewState extends State<MyScrollView> {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
         SliverAppBar(
-          leading: FaIcon(
-            FontAwesomeIcons.chevronLeft,
-            color: Colors.white,
+          leading: IconButton(
+            icon: FaIcon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -152,16 +155,24 @@ class _MyScrollViewState extends State<MyScrollView> {
           ),
           expandedHeight: 260,
           pinned: true,
-          floating: false,
-          snap: false,
         ),
       ],
       body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         children: <Widget>[
-          Text('Details'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+            child: Text(
+              'Details',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
           Wrap(
-            spacing: 10,
-            runSpacing: 20,
+            spacing: 5,
+            runSpacing: 10,
             children: <Widget>[
               AttributeCard(
                 attributeValue: Text(
@@ -346,7 +357,7 @@ class AttributeCard extends StatelessWidget {
         padding: EdgeInsets.all(10),
         width: isFullWidth
             ? MediaQuery.of(context).size.width - 20
-            : (MediaQuery.of(context).size.width - 30) / 2,
+            : (MediaQuery.of(context).size.width - 41) / 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
