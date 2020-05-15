@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:superhero/models/character_model.dart';
 import 'package:superhero/services/api_methods.dart';
@@ -17,8 +18,6 @@ class CharacterCard extends StatelessWidget {
             Navigator.pushNamed(context, '/details', arguments: character);
           },
           child: Container(
-            height: 250,
-            width: 190,
             decoration: new BoxDecoration(
               color: Color(0xff33445e),
               borderRadius: BorderRadius.circular(10),
@@ -95,29 +94,30 @@ class _CharactersState extends State<Characters> {
             snap: true,
           ),
         ],
-        body: ListView(
-          children: <Widget>[
-            FutureBuilder(
-              future: data,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                }
-                return snapshot.hasData
-                    ? Wrap(
-                        children: <Widget>[
-                          for (int i = 0; i < snapshot.data.length; i++)
-                            CharacterCard(
-                              character: snapshot.data[i],
-                            )
-                        ],
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      );
-              },
-            ),
-          ],
+        body: FutureBuilder(
+          future: data,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+            }
+            return snapshot.hasData
+                ? GridView.count(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: .75,
+                    children: <Widget>[
+                      for (int i = 0; i < snapshot.data.length; i++)
+                        CharacterCard(
+                          character: snapshot.data[i],
+                        )
+                    ],
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
         ),
       ),
     );
