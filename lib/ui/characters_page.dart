@@ -51,12 +51,26 @@ class Characters extends StatefulWidget {
 
 class _CharactersState extends State<Characters> {
   Future<List<Character>> data;
+  String search = 'man';
 
   @override
   void initState() {
     super.initState();
-    data = getSearchResults('man');
+    data = getSearchResults(search);
   }
+
+  void setSearch(text){
+    setState(() {
+      search = text;
+    });
+  }
+
+  void reSearch(str){
+    setState(() {
+      data = getSearchResults(str);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +81,8 @@ class _CharactersState extends State<Characters> {
           SliverAppBar(
             title: TextField(
               keyboardType: TextInputType.text,
+              onChanged: setSearch,
+              onSubmitted: reSearch,
               decoration: InputDecoration(
                 border: new OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -81,9 +97,16 @@ class _CharactersState extends State<Characters> {
                 hintText: 'start typing...',
                 hintStyle: TextStyle(color: Colors.white60),
                 fillColor: Color(0xff4f4c4c),
-                suffixIcon: Icon(
-                  Icons.search,
-                  color: Colors.white,
+                suffixIcon: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      data = getSearchResults(search);
+                    });
+                  },
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
                 ),
                 contentPadding: const EdgeInsets.only(left: 20),
               ),
