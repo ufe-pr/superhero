@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:superhero/models/character_model.dart';
 import 'package:superhero/services/api_methods.dart';
+import 'package:superhero/ui/details_page.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class CharacterCard extends StatelessWidget {
@@ -10,33 +11,64 @@ class CharacterCard extends StatelessWidget {
   const CharacterCard({Key key, this.character}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: character.id,
-      child: Material(
-        child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, '/details', arguments: character);
-          },
-          child: Container(
-            decoration: new BoxDecoration(
-              color: Color(0xff33445e),
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: NetworkImage(character.image.url),
-                fit: BoxFit.cover,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return Details();
+              },
+              settings: RouteSettings(
+                arguments: this.character,
+                name: 'details',
               ),
             ),
-            child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(character.name,
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                  )
-                ]),
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.all(0),
+          elevation: 10,
+          color: Color(0xff11111f),
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Image.network(
+                  this.character.image.url,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xdd000000),
+//                        Colors.transparent,
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    this.character.name,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -52,6 +84,7 @@ class Characters extends StatefulWidget {
 class _CharactersState extends State<Characters> {
   Future<List<Character>> data;
   String search = 'man';
+  FocusNode _searchFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -59,18 +92,24 @@ class _CharactersState extends State<Characters> {
     data = getSearchResults(search);
   }
 
-  void setSearch(text){
+  performSearch() {
+    setState(() {
+      data = getSearchResults(search);
+      _searchFocusNode.unfocus();
+    });
+  }
+
+  void setSearch(text) {
     setState(() {
       search = text;
     });
   }
 
-  void reSearch(str){
+  void reSearch(str) {
     setState(() {
       data = getSearchResults(str);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +120,11 @@ class _CharactersState extends State<Characters> {
           SliverAppBar(
             title: TextField(
               keyboardType: TextInputType.text,
+              focusNode: _searchFocusNode,
+              textInputAction: TextInputAction.search,
               onChanged: setSearch,
               onSubmitted: reSearch,
+              onEditingComplete: performSearch,
               decoration: InputDecoration(
                 border: new OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -98,11 +140,7 @@ class _CharactersState extends State<Characters> {
                 hintStyle: TextStyle(color: Colors.white60),
                 fillColor: Color(0xff4f4c4c),
                 suffixIcon: GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      data = getSearchResults(search);
-                    });
-                  },
+                  onTap: performSearch,
                   child: Icon(
                     Icons.search,
                     color: Colors.white,
@@ -125,7 +163,7 @@ class _CharactersState extends State<Characters> {
             }
             return snapshot.hasData
                 ? GridView.count(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                     crossAxisCount: 2,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 20,

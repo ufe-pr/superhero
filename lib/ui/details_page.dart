@@ -38,12 +38,9 @@ class TopDisplay extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: Hero(
-              tag: this.heroTag,
-              child: Image.network(
-                this.imageUrl,
-                fit: BoxFit.cover,
-              ),
+            child: Image.network(
+              this.imageUrl,
+              fit: BoxFit.cover,
             ),
           ),
           Positioned.fill(
@@ -51,7 +48,7 @@ class TopDisplay extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0x12000000),
+                    Color(0x8f000000),
                     Colors.transparent,
                     Color(0x12000000),
                   ],
@@ -165,7 +162,7 @@ class _MyScrollViewState extends State<MyScrollView> {
             child: Text(
               'Details',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -185,7 +182,7 @@ class _MyScrollViewState extends State<MyScrollView> {
               ),
               AttributeCard(
                 attributeValue: Text(
-                  '${widget.character.powerstats.power}',
+                  '${widget.character.powerstats.average}',
                   style: ATTRIBUTE_VALUE_STYLE,
                   softWrap: true,
                 ),

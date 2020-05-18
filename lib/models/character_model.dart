@@ -8,6 +8,8 @@ Character characterFromJson(String str) => Character.fromMap(json.decode(str));
 
 String characterToJson(Character data) => json.encode(data.toMap());
 
+const Pattern COMMA_SPLITTING_PATTERN = r'[\,\;](?![^\)]+\))\s*|[\,\;](?=[^\(\,]+\()\s*|(?<=\))[\,\;]\s*';
+
 class Character {
   final String id;
   final String name;
@@ -138,8 +140,8 @@ class Connections {
   });
 
   factory Connections.fromMap(Map<String, dynamic> json) => Connections(
-    groupAffiliation: json["group-affiliation"] == null ? null : json["group-affiliation"].split(RegExp(r"; |, ")),
-    relatives: json["relatives"] == null ? null : json["relatives"].split(RegExp(r"; |, ")),
+    groupAffiliation: json["group-affiliation"] == null ? null : json["group-affiliation"].split(RegExp(COMMA_SPLITTING_PATTERN)),
+    relatives: json["relatives"] == null ? null : json["relatives"].split(RegExp(COMMA_SPLITTING_PATTERN)),
   );
 
   Map<String, dynamic> toMap() => {
@@ -198,6 +200,25 @@ class Powerstats {
     "power": power == '' ? null : power,
     "combat": combat == '' ? null : combat,
   };
+
+  get average {
+    num _average, valsSum;
+    int valsCount = 0;
+    valsSum = 0;
+    List fields = [this.combat, this.power, this.durability, this.speed, this.strength, this.intelligence];
+
+    fields.forEach((element) {
+      try {
+        num value = num.parse(element);
+        valsSum += value;
+        valsCount++;
+      } on TypeError {}
+    });
+
+    _average = valsSum > 0 ? (valsSum ~/ valsCount) as int : this.power;
+
+    return _average;
+  }
 }
 
 class Work {
