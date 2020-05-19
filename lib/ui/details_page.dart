@@ -38,9 +38,12 @@ class TopDisplay extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: Image.network(
-              this.imageUrl,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag:this.heroTag,
+              child: Image.network(
+                this.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Positioned.fill(
@@ -50,7 +53,7 @@ class TopDisplay extends StatelessWidget {
                   colors: [
                     Color(0x8f000000),
                     Colors.transparent,
-                    Color(0x12000000),
+                    Color(0x62000000),
                   ],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,

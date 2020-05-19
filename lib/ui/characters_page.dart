@@ -38,9 +38,12 @@ class CharacterCard extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Positioned.fill(
-                child: Image.network(
-                  this.character.image.url,
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: this.character.id,
+                  child: Image.network(
+                    this.character.image.url,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -92,7 +95,7 @@ class _CharactersState extends State<Characters> {
     data = getSearchResults(search);
   }
 
-  performSearch() {
+  performSearch() async {
     setState(() {
       data = getSearchResults(search);
       _searchFocusNode.unfocus();
@@ -159,7 +162,10 @@ class _CharactersState extends State<Characters> {
           future: data,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              print(snapshot.error);
+              return Center(child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(snapshot.error, textAlign: TextAlign.center,),
+              ),);
             }
             return snapshot.hasData
                 ? GridView.count(
