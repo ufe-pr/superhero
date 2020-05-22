@@ -327,7 +327,7 @@ class _MyScrollViewState extends State<MyScrollView> {
 
 const ATTRIBUTE_VALUE_STYLE = TextStyle(
   fontSize: 18,
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w400,
 );
 
 const ATTRIBUTE_NAME_STYLE = TextStyle(
