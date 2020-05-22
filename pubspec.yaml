@@ -28,6 +28,7 @@ dependencies:
   google_fonts: ^1.0.0
   font_awesome_flutter: ^8.8.1
   flutter_vector_icons: ^0.2.1
+  loading: ^1.0.2
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/loading.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:superhero/models/character_model.dart';
 import 'package:superhero/services/api_methods.dart';
 import 'package:superhero/ui/details_page.dart';
@@ -183,7 +185,7 @@ class _CharactersState extends State<Characters> {
                     ],
                   )
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: Loading(indicator: BallPulseIndicator(), size: 80.0, color: Colors.white,)
                   );
           },
         ),
