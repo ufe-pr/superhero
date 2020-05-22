@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:superhero/models/character_model.dart';
 import 'package:superhero/services/api_methods.dart';
 import 'package:superhero/ui/details_page.dart';
-// import 'package:google_fonts/google_fonts.dart';
+//import 'package:google_fonts/google_fonts.dart';
 
 class CharacterCard extends StatelessWidget {
   final Character character;
@@ -167,10 +167,11 @@ class _CharactersState extends State<Characters> {
                 child: Text(snapshot.error, textAlign: TextAlign.center,),
               ),);
             }
+            var width = MediaQuery.of(context).size.width;
             return snapshot.hasData
                 ? GridView.count(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    crossAxisCount: 2,
+                    crossAxisCount: width < 480 ? 2 : (width*3/800).round(),
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 20,
                     childAspectRatio: .75,
