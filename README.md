@@ -19,5 +19,5 @@
 |![](screenshots/ironmandeets.png)|![img](screenshots/ironmandeets1.png)|![img](screenshots/ironmandeetsdark.png)|
 
 |Sentry's detail's Page|Search results for Thanos|
-|:---:|:---:|:---:|
+|:---:|:---:|
 |![](screenshots/sentrydeets.png)|![img](screenshots/thanos.png)|
