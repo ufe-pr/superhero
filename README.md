@@ -17,3 +17,7 @@
 |Ironman's detail's Page 0|Ironman's detail's Page 1|Ironman's detail's Page 2|
 |:---:|:---:|:---:|
 |![](screenshots/ironmandeets.png)|![img](screenshots/ironmandeets1.png)|![img](screenshots/ironmandeetsdark.png)|
+
+|Sentry's detail's Page|Search results for Thanos|
+|:---:|:---:|:---:|
+|![](screenshots/sentrydeets.png)|![img](screenshots/thanos.png)|
