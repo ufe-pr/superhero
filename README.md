@@ -4,7 +4,7 @@
 
 |Loading Page  (Light Theme)|  Loading Page  (Light Theme)|  Loading Page  (Light Theme)|
 |:---:|:---:|:---:|
-|[!](screenshots/loadinglight.png)|[!](screenshots/loadinglight.png)|[!](screenshots/loadinglight.png)|
+|![img](screenshots/loadinglight.png)|![img](screenshots/loadinglight.png)|![](screenshots/loadinglight.png)|
 ||||
 ||||
 ||||
