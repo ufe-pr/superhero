@@ -104,7 +104,7 @@ class MyScrollView extends StatefulWidget {
   _MyScrollViewState createState() => _MyScrollViewState();
 }
 
-Widget _buildDifferentSizeText(String text) {
+Widget _buildDifferentSizeText(String text, BuildContext context) {
   String part1, part2;
   List<String> splitString = text.split(' ');
   if (splitString.length == 2) {
@@ -113,7 +113,7 @@ Widget _buildDifferentSizeText(String text) {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: part1, style: ATTRIBUTE_VALUE_STYLE),
+          TextSpan(text: part1, style: ATTRIBUTE_VALUE_STYLE.copyWith(color: Theme.of(context).textTheme.bodyText1.color)),
           TextSpan(
             text: part2,
             style: GoogleFonts.raleway(
@@ -218,13 +218,13 @@ class _MyScrollViewState extends State<MyScrollView> {
               ),
               AttributeCard(
                 attributeValue:
-                    _buildDifferentSizeText(widget.character.appearance.height),
+                    _buildDifferentSizeText(widget.character.appearance.height, context),
                 attributeName: 'Height',
                 repIcon: Icon(Icons.swap_vert),
               ),
               AttributeCard(
                 attributeValue:
-                    _buildDifferentSizeText(widget.character.appearance.weight),
+                    _buildDifferentSizeText(widget.character.appearance.weight, context),
                 attributeName: 'Weight',
                 repIcon: Icon(Icons.fitness_center),
               ),

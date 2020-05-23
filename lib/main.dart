@@ -50,6 +50,7 @@ class SuperheroApp extends StatelessWidget {
     return MaterialApp(
       home: Characters(),
       theme: themeProvider.themeData,
+      title: 'SupaD',
     );
   }
 }
