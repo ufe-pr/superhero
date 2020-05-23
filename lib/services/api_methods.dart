@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:superhero/models/character_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:superhero/config_vars.dart';

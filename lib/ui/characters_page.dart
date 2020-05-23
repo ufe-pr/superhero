@@ -48,7 +48,7 @@ class CharacterCard extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: this.character.image.url,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) => CircularProgressIndicator(),
+                    placeholder: (_, __) => Center(child: CircularProgressIndicator()),
                   ),
                 ),
               ),
@@ -57,9 +57,7 @@ class CharacterCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        themeProvider.isDarkTheme
-                            ? Color(0xdd000000)
-                            : Color(0xddffffff),
+                        Color(0xdd000000),
 //                        Colors.transparent,
                         Colors.transparent,
                       ],
@@ -76,6 +74,7 @@ class CharacterCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     this.character.name,
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -153,6 +152,7 @@ class _CharactersState extends State<Characters> {
             snap: true,
             actions: <Widget>[
               Switch(
+                activeColor: Color(0xff4f4c0c),
                   value: themeProvider.isDarkTheme,
                   onChanged: (val) {
                     themeProvider.themeDataSwitch(val);

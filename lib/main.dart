@@ -49,6 +49,7 @@ class SuperheroApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       home: Characters(),
+      debugShowCheckedModeBanner: false,
       theme: themeProvider.themeData,
       title: 'SupaD',
     );

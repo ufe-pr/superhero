@@ -14,12 +14,14 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     var args = ModalRoute.of(context).settings.arguments;
     char.Character character = args;
     return Scaffold(
       body: MyScrollView(
         character: character,
       ),
+      backgroundColor: themeProvider.isDarkTheme ? themeProvider.darkTheme.primaryColor : Colors.grey.shade300,
     );
   }
 }
@@ -56,7 +58,7 @@ class TopDisplay extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    themeProvider.isDarkTheme ? Color(0x8f000000) : Color(0x8fffffff),
+                    Color(0x8f000000),
                     Colors.transparent,
                     themeProvider.isDarkTheme ? Color(0x62000000) : Color(0x62ffffff),
                   ],
@@ -77,12 +79,14 @@ class TopDisplay extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
                 Text(
                   this.publisher,
                   style: TextStyle(
                     fontSize: 14,
+                    color: Colors.white
                   ),
                 ),
               ],
