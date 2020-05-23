@@ -20,4 +20,4 @@
 
 |Sentry's detail's Page|Search results for Thanos|
 |:---:|:---:|
-|![](screenshots/sentrydeets.png)|![img](screenshots/thanos.png)|
+|![](screenshots/sentrydeets.png)|![img](screenshots/thanossearch.png)|
