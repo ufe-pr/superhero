@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:superhero/models/character_model.dart' as char;
+import 'package:superhero/providers/theme_provider.dart';
 
 class Details extends StatefulWidget {
   @override
@@ -34,15 +37,17 @@ class TopDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       child: Stack(
         children: <Widget>[
           Positioned.fill(
             child: Hero(
               tag:this.heroTag,
-              child: Image.network(
-                this.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: this.imageUrl,
                 fit: BoxFit.cover,
+                placeholder: (_, __) => CircularProgressIndicator(),
               ),
             ),
           ),
@@ -51,9 +56,9 @@ class TopDisplay extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0x8f000000),
+                    themeProvider.isDarkTheme ? Color(0x8f000000) : Color(0x8fffffff),
                     Colors.transparent,
-                    Color(0x62000000),
+                    themeProvider.isDarkTheme ? Color(0x62000000) : Color(0x62ffffff),
                   ],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
@@ -132,13 +137,14 @@ Widget _buildDifferentSizeText(String text) {
 class _MyScrollViewState extends State<MyScrollView> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
         SliverAppBar(
           leading: IconButton(
             icon: FaIcon(
               FontAwesomeIcons.chevronLeft,
-              color: Colors.white,
+              color: themeProvider.isDarkTheme ? Colors.white : Colors.black,
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -351,8 +357,9 @@ class AttributeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Card(
-      elevation: 0,
+      elevation: themeProvider.isDarkTheme ? 0 : 10,
       child: Container(
         padding: EdgeInsets.all(10),
         width: isFullWidth

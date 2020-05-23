@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/loading.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:superhero/models/character_model.dart';
+import 'package:superhero/providers/theme_provider.dart';
 import 'package:superhero/services/api_methods.dart';
 import 'package:superhero/ui/details_page.dart';
-//import 'package:google_fonts/google_fonts.dart';
 
 class CharacterCard extends StatelessWidget {
   final Character character;
@@ -13,6 +15,7 @@ class CharacterCard extends StatelessWidget {
   const CharacterCard({Key key, this.character}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Material(
       child: InkWell(
         onTap: () {
@@ -36,15 +39,16 @@ class CharacterCard extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.all(0),
           elevation: 10,
-          color: Color(0xff11111f),
+          color: themeProvider.isDarkTheme ? Color(0xff11111f) : Colors.grey,
           child: Stack(
             children: <Widget>[
               Positioned.fill(
                 child: Hero(
                   tag: this.character.id,
-                  child: Image.network(
-                    this.character.image.url,
+                  child: CachedNetworkImage(
+                    imageUrl: this.character.image.url,
                     fit: BoxFit.cover,
+                    placeholder: (_, __) => CircularProgressIndicator(),
                   ),
                 ),
               ),
@@ -53,7 +57,9 @@ class CharacterCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xdd000000),
+                        themeProvider.isDarkTheme
+                            ? Color(0xdd000000)
+                            : Color(0xddffffff),
 //                        Colors.transparent,
                         Colors.transparent,
                       ],
@@ -118,6 +124,7 @@ class _CharactersState extends State<Characters> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return new Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
@@ -131,49 +138,47 @@ class _CharactersState extends State<Characters> {
               onSubmitted: reSearch,
               onEditingComplete: performSearch,
               decoration: InputDecoration(
-                border: new OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(18.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                filled: true,
                 hintText: 'start typing...',
-                hintStyle: TextStyle(color: Colors.white60),
-                fillColor: Color(0xff4f4c4c),
                 suffixIcon: GestureDetector(
                   onTap: performSearch,
                   child: Icon(
                     Icons.search,
-                    color: Colors.white,
                   ),
                 ),
-                contentPadding: const EdgeInsets.only(left: 20),
               ),
             ),
             backgroundColor: Colors.transparent,
             elevation: 0,
             floating: true,
             snap: true,
+            actions: <Widget>[
+              Switch(
+                  value: themeProvider.isDarkTheme,
+                  onChanged: (val) {
+                    themeProvider.themeDataSwitch(val);
+                  })
+            ],
           ),
         ],
         body: FutureBuilder(
           future: data,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Text(snapshot.error, textAlign: TextAlign.center,),
-              ),);
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Text(
+                    snapshot.error,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
             }
             var width = MediaQuery.of(context).size.width;
             return snapshot.hasData
                 ? GridView.count(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    crossAxisCount: width < 480 ? 2 : (width*3/800).round(),
+                    crossAxisCount: width < 480 ? 2 : (width * 3 / 800).round(),
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 20,
                     childAspectRatio: .75,
@@ -185,8 +190,12 @@ class _CharactersState extends State<Characters> {
                     ],
                   )
                 : Center(
-                    child: Loading(indicator: BallPulseIndicator(), size: 80.0, color: Colors.white,)
-                  );
+                    child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 80.0,
+                    color:
+                        themeProvider.isDarkTheme ? Colors.white : Colors.black,
+                  ));
           },
         ),
       ),
