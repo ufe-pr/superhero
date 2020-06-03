@@ -23,6 +23,8 @@
 |![](screenshots/sentrydeets.png)|![img](screenshots/thanossearch.png)|
 
 
+Builds for this app can be found [here](https://github.com/ufe-pr/superhero/tree/master/assets/builds).
+
 You like what you see? Hit the star button✨
 
 
